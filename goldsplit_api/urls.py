@@ -1,10 +1,17 @@
 from django.urls import path, include
+from rest_framework import routers
 from .views import (
-    RunsListApiView,
-    RunDetailsApiView
+    RunsViewSet,
+    SplitsViewSet,
+    GamesViewSet
 )
 
+router = routers.DefaultRouter()
+router.register('runs', RunsViewSet)
+router.register('splits', SplitsViewSet)
+router.register('games', GamesViewSet)
+
 urlpatterns = [
-    path('runs', RunsListApiView.as_view()),
-    path('runs/<str:run_id>', RunDetailsApiView.as_view())
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
