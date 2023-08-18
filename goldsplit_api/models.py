@@ -9,7 +9,7 @@ class GamesManager(models.Manager):
 
 class Games(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     release_year = models.IntegerField(null=True)
 
     objects = GamesManager()
