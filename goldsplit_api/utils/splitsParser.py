@@ -6,8 +6,6 @@ from statistics import mean
 
 from .timeUtils import timeToMs
 
-
-
 def parseSplits(file):
     #parses uploaded splits file
     try:
@@ -15,16 +13,20 @@ def parseSplits(file):
         root = tree.getroot()
 
         formattedSplits = []
-        total_time = gold_total_time = 0
+        total_time = gold_total_time = previous_segment_time = 0
 
         for elem in root.iter('Segments'):
             segments = elem.findall('Segment')
             for split in segments:
-                #from each split we need name, pb time, gold time, average time
                 name = split.find('Name').text
 
-                time = timeToMs(split.find('SplitTimes/SplitTime/RealTime').text)
+                #livesplit gives us the total time for the split so we need to track the previous segment time and remove it
+                #in order to just get the segment time
+                time = timeToMs(split.find('SplitTimes/SplitTime/RealTime').text) - previous_segment_time
                 total_time += time
+
+                #update previous segment time for next loop
+                previous_segment_time = total_time
 
                 gold_time = timeToMs(split.find('BestSegmentTime/RealTime').text)
                 gold_total_time += gold_time
