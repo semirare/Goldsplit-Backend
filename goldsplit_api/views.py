@@ -27,7 +27,15 @@ class SplitsUploadView(APIView):
         splits_file = request.data['splits_file']
         splits = parseSplits(splits_file)
 
-        game = Games.objects.create_game(name=splits['game_name'])
+        #check if games is already in db, if not then create it
+        game = Games.objects.filter(name=splits['game_name'])
+        print(game)
+        if game.exists():
+            game = game[0]
+            print(game)
+        else:        
+            game = Games.objects.create_game(name=splits['game_name'])   
+
         run = Runs.objects.create_run(game=game, category=splits['category'])
         for split in splits['splits']:
             Splits.objects.create_split(
@@ -39,5 +47,6 @@ class SplitsUploadView(APIView):
                                         gold_total_time=split['gold_total_time'],
                                         average_time=split['average_time']
             )
+        data = {'run_id': run.id}
 
-        return Response(status=200)
+        return Response(data=data, status=200)
