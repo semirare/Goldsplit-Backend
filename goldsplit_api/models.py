@@ -37,7 +37,7 @@ class Runs(models.Model):
             return f'Unknown Game - {self.category_name}'
 
 class SplitsManager(models.Manager):
-    def create_split(self, run, name, time, total_time, gold_time, gold_total_time, average_time):
+    def create_split(self, run, name, time, total_time, gold_time, gold_total_time, average_time, average_total_time):
         split = self.create(
                         run=run,
                         name=name,
@@ -45,7 +45,8 @@ class SplitsManager(models.Manager):
                         total_time=total_time,
                         gold_time=gold_time,
                         gold_total_time=gold_total_time,
-                        average_time=average_time
+                        average_time=average_time,
+                        average_total_time=average_total_time
         )
 
         return split
@@ -58,6 +59,7 @@ class Splits(models.Model):
     gold_time = models.PositiveBigIntegerField()
     gold_total_time = models.PositiveBigIntegerField()
     average_time = models.PositiveBigIntegerField()
+    average_total_time = models.PositiveBigIntegerField()
     run = models.ForeignKey(Runs, on_delete=models.CASCADE)
 
     objects = SplitsManager()

@@ -68,7 +68,8 @@ class SplitsUploadView(APIView):
                                         total_time=split['total_time'],
                                         gold_time=split['gold_time'],
                                         gold_total_time=split['gold_total_time'],
-                                        average_time=split['average_time']
+                                        average_time=split['average_time'],
+                                        average_total_time=split['average_total_time']
             )
         data = {'run_id': run.id}
 

@@ -13,7 +13,7 @@ def parseSplits(file):
         root = tree.getroot()
 
         formattedSplits = []
-        total_time = gold_total_time = previous_segment_time = 0
+        total_time = gold_total_time = average_total_time = previous_segment_time = 0
 
         for elem in root.iter('Segments'):
             segments = elem.findall('Segment')
@@ -46,6 +46,9 @@ def parseSplits(file):
                 for seg in split.findall('SegmentHistory/Time/RealTime'):
                     seg_times.append(timeToMs(seg.text))
 
+                average_time = round(mean(seg_times))
+                average_total_time += average_time
+
                 formattedSplits.append(
                     {
                         'name': name,
@@ -53,7 +56,8 @@ def parseSplits(file):
                         'total_time': total_time,
                         'gold_time': gold_time,
                         'gold_total_time': gold_total_time,
-                        'average_time': round(mean(seg_times))
+                        'average_time': average_time,
+                        'average_total_time': average_total_time
                     }
                 )
             
