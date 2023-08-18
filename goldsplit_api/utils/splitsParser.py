@@ -18,7 +18,17 @@ def parseSplits(file):
         for elem in root.iter('Segments'):
             segments = elem.findall('Segment')
             for split in segments:
+
+                #we don't currently support subsplits which can make names look weird
+                #to fix this we have to:
+                #1) remove any leading '-' which denotes a subsplit
+                #2) remove any leading text enclosed in a set of brackets { } which denotes a subsplit section header
                 name = split.find('Name').text
+                if name[0] == '-':
+                    name = name[1:]
+                elif name[0] == '{':
+                    #split the string into 2 pieces at the first closing brace and take the second piece of the string as the name
+                    name = name.split('}',1)[-1]
 
                 #livesplit gives us the total time for the split so we need to track the previous segment time and remove it
                 #in order to just get the segment time
