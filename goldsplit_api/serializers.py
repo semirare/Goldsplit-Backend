@@ -13,6 +13,15 @@ class RunsSerializer(ModelSerializer):
         model = Runs
         fields = ['id', 'game', 'category_name', 'game_name', 'time']
 
+class GamesRunsSerialzier(ModelSerializer):
+    #used when details of a specific run are requested, returns all children runs
+    #as well as the game info as above
+    runs = RunsSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Games
+        fields = ['id', 'name', 'release_year', 'runs']
+
 class SplitsSerializer(ModelSerializer):
     class Meta:
         model = Splits

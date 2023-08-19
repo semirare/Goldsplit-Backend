@@ -13,6 +13,18 @@ class GamesViewSet(viewsets.ModelViewSet):
     queryset = Games.objects.all()
     serializer_class = GamesSerializer
 
+    def retrieve(self, request, pk):
+        if not pk:
+            return ParseError()
+
+        try:
+            game = Games.objects.get(id=pk)
+        except:
+            raise ValidationError()
+
+        game.runs = game.runs_set.all()
+        return Response(data=GamesRunsSerialzier(game).data, status=200)
+
 class RunsViewSet(viewsets.ModelViewSet):
     queryset = Runs.objects.all()
     serializer_class = RunsSerializer      
@@ -26,7 +38,7 @@ class RunDetailsView(APIView):
         try:
             run = Runs.objects.get(id=run_id)
         except:
-            raise ValidationError
+            raise ValidationError()
 
         splits = run.splits_set.all().order_by('total_time')
 
