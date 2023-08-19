@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.core.validators import MaxValueValidator
 
 class GamesManager(models.Manager):
     def create_game(self, name):
@@ -38,7 +39,7 @@ class Runs(models.Model):
             return f'Unknown Game - {self.category_name}'
 
 class SplitsManager(models.Manager):
-    def create_split(self, run, name, time, total_time, gold_time, gold_total_time, average_time, average_total_time):
+    def create_split(self, run, name, time, total_time, gold_time, gold_total_time, average_time, average_total_time, reset_percentage):
         split = self.create(
                         run=run,
                         name=name,
@@ -47,7 +48,8 @@ class SplitsManager(models.Manager):
                         gold_time=gold_time,
                         gold_total_time=gold_total_time,
                         average_time=average_time,
-                        average_total_time=average_total_time
+                        average_total_time=average_total_time,
+                        reset_percentage=reset_percentage
         )
 
         return split
@@ -61,6 +63,9 @@ class Splits(models.Model):
     gold_total_time = models.PositiveBigIntegerField()
     average_time = models.PositiveBigIntegerField()
     average_total_time = models.PositiveBigIntegerField()
+    reset_percentage = models.PositiveSmallIntegerField(
+        MaxValueValidator(100)
+    )
     run = models.ForeignKey(Runs, on_delete=models.CASCADE)
 
     objects = SplitsManager()

@@ -15,6 +15,8 @@ def parseSplits(file):
         formattedSplits = []
         total_time = gold_total_time = average_total_time = previous_segment_time = 0
 
+        prev_split_count = int(root.find('AttemptCount').text)
+
         for elem in root.iter('Segments'):
             segments = elem.findall('Segment')
             for split in segments:
@@ -46,6 +48,16 @@ def parseSplits(file):
                 for seg in split.findall('SegmentHistory/Time/RealTime'):
                     seg_times.append(timeToMs(seg.text))
 
+                #to get the reset percentage, divide the amount of times recorded
+                #for this split by the amount of times recorded for the previous split * 100
+                #if this is the first split, prev_split_count is the total number of attempts
+                print(len(seg_times))
+                print(prev_split_count)
+                print(100 - int((len(seg_times) / prev_split_count) * 100))
+                print('')
+                reset_percent = 100 - int((len(seg_times) / prev_split_count) * 100)
+                prev_split_count = len(seg_times)
+
                 average_time = round(mean(seg_times))
                 average_total_time += average_time
 
@@ -57,7 +69,8 @@ def parseSplits(file):
                         'gold_time': gold_time,
                         'gold_total_time': gold_total_time,
                         'average_time': average_time,
-                        'average_total_time': average_total_time
+                        'average_total_time': average_total_time,
+                        'reset_percentage': reset_percent
                     }
                 )
             
