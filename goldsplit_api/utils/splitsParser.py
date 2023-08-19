@@ -64,6 +64,7 @@ def parseSplits(file):
         splits_info = {
             'game_name': root.find('./GameName').text,
             'category': root.find('./CategoryName').text,
+            'time': total_time,
             'splits': formattedSplits
         }
 

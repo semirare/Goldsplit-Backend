@@ -18,8 +18,8 @@ class Games(models.Model):
         return self.name
 
 class RunsManager(models.Manager):
-    def create_run(self, game, category):
-        run = self.create(game=game, category_name=category)
+    def create_run(self, game, category, time):
+        run = self.create(game=game, category_name=category, time=time)
 
         return run
 
@@ -27,6 +27,7 @@ class Runs(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     game = models.ForeignKey(Games, on_delete=models.SET_NULL, null=True)
     category_name = models.CharField(max_length=200)
+    time = models.PositiveBigIntegerField()
 
     objects = RunsManager()
 

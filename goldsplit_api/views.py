@@ -15,7 +15,7 @@ class GamesViewSet(viewsets.ModelViewSet):
 
 class RunsViewSet(viewsets.ModelViewSet):
     queryset = Runs.objects.all()
-    serializer_class = RunsSerializer
+    serializer_class = RunsSerializer      
 
 class RunDetailsView(APIView):
 
@@ -59,7 +59,7 @@ class SplitsUploadView(APIView):
         else:        
             game = Games.objects.create_game(name=splits['game_name'])   
 
-        run = Runs.objects.create_run(game=game, category=splits['category'])
+        run = Runs.objects.create_run(game=game, category=splits['category'], time=splits['time'])
         for split in splits['splits']:
             Splits.objects.create_split(
                                         run=run,

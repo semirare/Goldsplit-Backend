@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField
 from .models import Runs, Splits, Games
 
 class GamesSerializer(ModelSerializer):
@@ -7,9 +7,11 @@ class GamesSerializer(ModelSerializer):
         fields = ['name', 'release_year']
 
 class RunsSerializer(ModelSerializer):
+    game_name = CharField(read_only=True, source='game.name')
+
     class Meta:
         model = Runs
-        fields = ['id', 'game', 'category_name']
+        fields = ['id', 'game', 'category_name', 'game_name', 'time']
 
 class SplitsSerializer(ModelSerializer):
     class Meta:
