@@ -4,7 +4,7 @@ from .models import Runs, Splits, Games
 class GamesSerializer(ModelSerializer):
     class Meta:
         model = Games
-        fields = ['name', 'release_year']
+        fields = ['id', 'name', 'release_year']
 
 class RunsSerializer(ModelSerializer):
     game_name = CharField(read_only=True, source='game.name')
