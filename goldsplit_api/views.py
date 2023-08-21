@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Group
 from django.db import transaction
+from django.db.models import Count
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,7 +11,7 @@ from .models import Runs, Splits, Games
 from .utils.splitsParser import parseSplits
 
 class GamesViewSet(viewsets.ModelViewSet):
-    queryset = Games.objects.all()
+    queryset = Games.objects.annotate(num_runs=Count('runs'))
     serializer_class = GamesSerializer
 
     def retrieve(self, request, pk):
