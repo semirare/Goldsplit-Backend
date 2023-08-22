@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from django.db import models
 
 class GamesManager(models.Manager):
@@ -28,6 +29,7 @@ class Runs(models.Model):
     game = models.ForeignKey(Games, on_delete=models.SET_NULL, null=True)
     category_name = models.CharField(max_length=200)
     time = models.PositiveBigIntegerField()
+    upload_date = models.DateTimeField(editable=False, default=datetime.now())
 
     objects = RunsManager()
 

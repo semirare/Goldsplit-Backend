@@ -1,4 +1,6 @@
 from rest_framework.serializers import ModelSerializer, CharField, IntegerField
+from datetime import datetime
+
 from .models import Runs, Splits, Games
 
 class GamesSerializer(ModelSerializer):
@@ -13,7 +15,7 @@ class RunsSerializer(ModelSerializer):
 
     class Meta:
         model = Runs
-        fields = ['id', 'game', 'category_name', 'game_name', 'time']
+        fields = ['id', 'game', 'category_name', 'game_name', 'time', 'upload_date']
 
 class GamesRunsSerialzier(ModelSerializer):
     #used when details of a specific run are requested, returns all children runs
