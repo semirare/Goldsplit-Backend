@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from django.db import models
+from django.conf import settings
 
 class GamesManager(models.Manager):
     def create_game(self, name):
@@ -19,8 +20,8 @@ class Games(models.Model):
         return self.name
 
 class RunsManager(models.Manager):
-    def create_run(self, game, category, time):
-        run = self.create(game=game, category_name=category, time=time)
+    def create_run(self, game, category, time, user):
+        run = self.create(game=game, category_name=category, time=time, user=user)
 
         return run
 
@@ -30,6 +31,11 @@ class Runs(models.Model):
     category_name = models.CharField(max_length=200)
     time = models.PositiveBigIntegerField()
     upload_date = models.DateTimeField(editable=False, default=datetime.now())
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True
+    )
 
     objects = RunsManager()
 
@@ -69,3 +75,4 @@ class Splits(models.Model):
 
     def __str__(self):
         return self.name
+    

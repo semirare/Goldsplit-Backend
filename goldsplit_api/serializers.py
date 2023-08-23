@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer, CharField, IntegerField
 from datetime import datetime
 
 from .models import Runs, Splits, Games
+from account.serializers import UserSerializer
 
 class GamesSerializer(ModelSerializer):
     num_runs = IntegerField()
@@ -12,10 +13,11 @@ class GamesSerializer(ModelSerializer):
 
 class RunsSerializer(ModelSerializer):
     game_name = CharField(read_only=True, source='game.name')
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Runs
-        fields = ['id', 'game', 'category_name', 'game_name', 'time', 'upload_date']
+        fields = ['id', 'game', 'category_name', 'game_name', 'time', 'upload_date', 'user']
 
 class GamesRunsSerialzier(ModelSerializer):
     #used when details of a specific run are requested, returns all children runs

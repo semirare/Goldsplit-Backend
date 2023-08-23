@@ -72,7 +72,11 @@ class SplitsUploadView(APIView):
         else:        
             game = Games.objects.create_game(name=splits['game_name'])   
 
-        run = Runs.objects.create_run(game=game, category=splits['category'], time=splits['time'])
+        user = request.user
+        if user.is_authenticated:
+            run = Runs.objects.create_run(game=game, category=splits['category'], time=splits['time'], user=user)
+        else:
+            run = Runs.objects.create_run(game=game, category=splits['category'], time=splits['time'], user=None)
         for split in splits['splits']:
             Splits.objects.create_split(
                                         run=run,

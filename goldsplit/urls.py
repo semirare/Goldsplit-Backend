@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from goldsplit_api import urls as goldsplit_urls
+from account import urls as account_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('goldsplit/', include(goldsplit_urls)),
+    path('goldsplit/api/', include(goldsplit_urls)),
+    path('goldsplit/account/', include(account_urls))
 ]
